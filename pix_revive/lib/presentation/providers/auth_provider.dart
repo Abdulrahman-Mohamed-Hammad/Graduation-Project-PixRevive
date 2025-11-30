@@ -20,6 +20,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
   final email = TextEditingController();
   final password = TextEditingController();
   final confirmpassword = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   loginAndRegiter(String path, AuthModel model) async {
     emit(LoadingState());

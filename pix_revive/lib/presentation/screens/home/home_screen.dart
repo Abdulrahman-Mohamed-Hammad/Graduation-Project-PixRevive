@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pix_revive/core/constants/app_colors.dart';
 import 'package:pix_revive/core/constants/app_fonts.dart';
 import 'package:pix_revive/core/constants/app_icons.dart';
+import 'package:pix_revive/core/router/go_router.dart';
 import 'package:pix_revive/presentation/providers/auth_controller.dart';
 
 const List<List<dynamic>> features = [
@@ -17,12 +18,6 @@ const List<List<dynamic>> features = [
   ["High Resolotion", true],
   ["Up to 10 Images", false],
 ];
-
-// static const List<String> assetName = [
-//   "assets/Icons/1.png",
-//   "assets/Icons/2.jpg",
-//   "assets/Icons/4.jpg",
-// ];
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -196,18 +191,11 @@ class _WhiteBoardContainerState extends State<WhiteBoardContainer> {
   final ImagePicker picker = ImagePicker();
   List<XFile> images = [];
   List<List<String>> imageInfo = [];
-  List<String> texts = [
-    "Upload your photos",
-    "Tap to select an images and start editing",
-  ];
-  late String text1;
-  late String text2;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    text1 = texts[0];
-    text2 = texts[1];
+
     jumpAnimation();
   }
 
@@ -229,9 +217,8 @@ class _WhiteBoardContainerState extends State<WhiteBoardContainer> {
       imageInfo = await getImagesInfo(result);
       setState(() {
         images.addAll(result);
-        text1 = "${images.length} images selected";
-        text2 = "Ready to enhance your photos, or tap again to change them";
       });
+      push(context, KRoutes.enhanceImages, extra: images);
     }
   }
 
@@ -289,10 +276,13 @@ class _WhiteBoardContainerState extends State<WhiteBoardContainer> {
                         ),
                       ),
                       const Gap(40),
-                      Text(text1, style: Kfonts.regular18Black),
+                      const Text(
+                        "Upload your photos",
+                        style: Kfonts.regular18Black,
+                      ),
                       const Gap(10),
-                      Text(
-                        text2,
+                      const Text(
+                        "Tap to select an images and start editing",
                         style: Kfonts.regular14,
                         textAlign: TextAlign.center,
                       ),
@@ -316,11 +306,13 @@ class Imagesboard extends StatelessWidget {
     required this.corner,
     this.padding,
     this.child,
+    this.color,
   });
 
   final double? height;
   final double? width;
   final double corner;
+  final Color? color;
   final EdgeInsetsGeometry? padding;
   final Widget? child;
 
@@ -332,13 +324,14 @@ class Imagesboard extends StatelessWidget {
       padding: padding,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: Kcolor.white,
-        borderRadius: BorderRadius.circular(24),
+        color: color ?? Kcolor.white,
+        borderRadius: BorderRadius.circular(corner),
         boxShadow: [
-          BoxShadow(
-            color: Kcolor.endGradient.withValues(alpha: 0.15),
-            blurRadius: 20,
-          ),
+          if (color == null)
+            BoxShadow(
+              color: Kcolor.endGradient.withValues(alpha: 0.15),
+              blurRadius: 20,
+            ),
         ],
       ),
       child: child,

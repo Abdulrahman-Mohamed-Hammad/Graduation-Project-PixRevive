@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   carousel_slider: ^5.1.1
+  color_filter_extension: ^1.0.1
   dartz: ^0.10.1
   dio: ^5.9.0
   dotted_border: ^3.1.0

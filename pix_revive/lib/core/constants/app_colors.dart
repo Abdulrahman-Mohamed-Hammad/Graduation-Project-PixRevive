@@ -5,6 +5,7 @@ class Kcolor {
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
   static const gray = Color(0xFF414348);
+  static const grayOpacity = Color(0x413F4347);
   static const lightgray = Color(0xFFF3F4F6);
 
   static const firstGradient = Color(0xFF23BFC5);
@@ -19,21 +20,25 @@ class Kcolor {
   static const gold = Color(0xFFEFBF04);
 }
 
-OutlineInputBorder custombordor = OutlineInputBorder(
+OutlineInputBorder customborder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(12),
   borderSide: BorderSide(color: Color(0xFFE5E7EB)),
 );
+OutlineInputBorder errorbordor = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(12),
+  borderSide: BorderSide(color: Colors.red),
+);
 
 var inputDecoration = InputDecoration(
-  enabledBorder: custombordor,
-  focusedBorder: custombordor,
+  enabledBorder: customborder,
+  focusedBorder: customborder,
   contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
   isDense: true,
 
   hintStyle: TextStyle(color: Kcolor.inputTextFormField),
   filled: true,
-  errorBorder: custombordor,
-  focusedErrorBorder: custombordor,
+  errorBorder: errorbordor,
+  focusedErrorBorder: errorbordor,
 
   floatingLabelAlignment: FloatingLabelAlignment.start,
   fillColor: Kcolor.lightgray.withValues(alpha: 0.3),

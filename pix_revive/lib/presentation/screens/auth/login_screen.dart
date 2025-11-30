@@ -30,72 +30,101 @@ class LoginScreen extends StatelessWidget {
           go(context, KRoutes.home);
         }
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(),
-          Text(
-            "Email",
-            style: Kfonts.meduim16.copyWith(fontSize: 14, color: Kcolor.black),
-          ),
-          const Gap(8),
-          CustomTextFormFieldEmail(
-            hint: "you@example.com",
-            controller: cubit.email,
-            prefixIcon: CustomIconTextFormField(icon: Kicon.email),
-          ),
-          const Gap(20),
-          Text(
-            "Password",
-            style: Kfonts.meduim16.copyWith(fontSize: 14, color: Kcolor.black),
-          ),
-          const Gap(8),
-          CustomTextFormFieldPassword(
-            controller: cubit.password,
-            hint: "••••••••",
-            prefixIcon: CustomIconTextFormField(icon: Kicon.lock),
-            suffixIcon: CustomIconTextFormField(icon: Kicon.openeye),
-          ),
-          const Gap(4),
-          Align(
-            alignment: Alignment.centerRight,
-            child: InkWell(
-              onTap: () {
-                push(context, KRoutes.forgotPassword);
+      child: Form(
+        key: cubit.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(),
+            Text(
+              "Email",
+              style: Kfonts.meduim16.copyWith(
+                fontSize: 14,
+                color: Kcolor.black,
+              ),
+            ),
+            const Gap(8),
+            CustomTextFormFieldEmail(
+              hint: "you@example.com",
+              controller: cubit.email,
+              prefixIcon: CustomIconTextFormField(icon: Kicon.email),
+              validator: (value) {
+                if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value!)) {
+                  return "Invalid email";
+                }
+                return null;
               },
-              child: Text(
-                "Forgot password?",
-                style: Kfonts.meduim16.copyWith(
-                  fontSize: 13,
-                  color: Kcolor.endGradient,
+            ),
+            const Gap(20),
+            Text(
+              "Password",
+              style: Kfonts.meduim16.copyWith(
+                fontSize: 14,
+                color: Kcolor.black,
+              ),
+            ),
+            const Gap(8),
+            CustomTextFormFieldPassword(
+              controller: cubit.password,
+              hint: "••••••••",
+              prefixIcon: CustomIconTextFormField(icon: Kicon.lock),
+              suffixIcon: CustomIconTextFormField(icon: Kicon.openeye),
+              validator: (value) {
+                if (value == null || value.length < 6) {
+                  return "Password must be at least 8 characters";
+                }
+                return null; 
+
+              },
+            ),
+            const Gap(4),
+            Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () {
+                  push(context, KRoutes.forgotPassword);
+                },
+                child: Text(
+                  "Forgot password?",
+                  style: Kfonts.meduim16.copyWith(
+                    fontSize: 13,
+                    color: Kcolor.endGradient,
+                  ),
                 ),
               ),
             ),
-          ),
 
-          const Gap(13),
-          CustomMainButton(
-            text: "Sign in",
-            onTap: () => cubit.loginAndRegiter(
-              Endpoints.login,
-              AuthModel(email: cubit.email.text, password: cubit.password.text),
+            const Gap(13),
+            CustomMainButton(
+              text: "Sign in",
+              onTap: () {
+                if (cubit.formKey.currentState!.validate()) {
+                  cubit.loginAndRegiter(
+                    Endpoints.login,
+                    AuthModel(
+                      email: cubit.email.text,
+                      password: cubit.password.text,
+                    ),
+                  );
+                }
+              },
             ),
-          ),
 
-          const Gap(13),
-          GoogleButton(
-            child: Center(
-              child: Row(
-                spacing: 10,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(Kicon.google, width: 24),
-                  const Text("Contine with Google", style: Kfonts.meduim16),
-                ],
+            const Gap(13),
+            GoogleButton(
+              child: Center(
+                child: Row(
+                  spacing: 10,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(Kicon.google, width: 24),
+                    const Text("Contine with Google", style: Kfonts.meduim16),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

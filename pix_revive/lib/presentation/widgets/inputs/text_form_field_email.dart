@@ -52,12 +52,14 @@ class CustomTextFormFieldPassword extends StatelessWidget {
 
     this.error,
     this.suffixIcon,
+    this.validator,
   });
   final String hint;
   final String? error;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextEditingController? controller;
+   final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +77,7 @@ class CustomTextFormFieldPassword extends StatelessWidget {
       cursorColor: Kcolor.black,
       cursorErrorColor: Kcolor.black,
       textInputAction: TextInputAction.next,
+      validator: validator,
     );
   }
 }

@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
+  color_filter_extension:
+    dependency: "direct main"
+    description:
+      name: color_filter_extension
+      sha256: "3c2326b506bd305f448ca9d29d5de6c1f634947ef37f3b97e9703ea5f954357b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   cross_file:
     dependency: transitive
     description:

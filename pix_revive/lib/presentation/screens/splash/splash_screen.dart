@@ -22,19 +22,27 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Pix", style: Kfonts.semiBold48),
-            Text(
-              "Revive",
-              style: Kfonts.semiBold48.copyWith(color: Kcolor.mainColor),
-            ),
-          ],
+    return Scaffold(body: Center(child: LogoText()));
+  }
+}
+
+class LogoText extends StatelessWidget {
+  const LogoText({super.key, this.size = 48});
+  final double size;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Pix", style: Kfonts.semiBold48.copyWith(fontSize: size)),
+        Text(
+          "Revive",
+          style: Kfonts.semiBold48.copyWith(
+            color: Kcolor.mainColor,
+            fontSize: size,
+          ),
         ),
-      ),
+      ],
     );
   }
 }

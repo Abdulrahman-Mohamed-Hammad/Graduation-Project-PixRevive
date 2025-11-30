@@ -1,8 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pix_revive/presentation/providers/AppCubit/app_cubit.dart';
 import 'package:pix_revive/presentation/providers/auth_controller.dart';
 import 'package:pix_revive/presentation/screens/auth/forgot_password_screen.dart';
 import 'package:pix_revive/presentation/screens/auth/reset_password.dart';
+import 'package:pix_revive/presentation/screens/edit_image/enhance-images.dart';
 import 'package:pix_revive/presentation/screens/home/home_screen.dart';
 import 'package:pix_revive/presentation/screens/splash/splash_screen.dart';
 
@@ -12,6 +16,7 @@ class KRoutes {
   static String forgotPassword = "/forgotPassword";
   static String resetPassword = "/ResetPassword";
   static String home = "/Home";
+  static String enhanceImages = "/enhanceImages";
 
   static var routes = GoRouter(
     routes: [
@@ -24,10 +29,18 @@ class KRoutes {
         path: forgotPassword,
         builder: (context, state) => ForgotPassword(),
       ),
-      GoRoute(path: home, builder: (context, state) => Home()),
+
       GoRoute(
         path: resetPassword,
         builder: (context, state) => ResetPassword(),
+      ),
+      GoRoute(path: home, builder: (context, state) => Home()),
+      GoRoute(
+        path: enhanceImages,
+        builder: (context, state) => BlocProvider<AppCubit>(
+          create: (context) => AppCubit(),
+          child: EnhanceImages(images: state.extra as List<XFile>),
+        ),
       ),
     ],
   );
