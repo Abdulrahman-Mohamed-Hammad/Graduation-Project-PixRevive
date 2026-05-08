@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "86189973570",
+    "project_id": "pixrevive-27081",
+    "storage_bucket": "pixrevive-27081.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86189973570:android:ab96117cdaa8d6d79d4ddb",
+        "android_client_info": {
+          "package_name": "com.GraduationProject.pix_revive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86189973570-90fss8rouk2j744fjuq33i3rm63jt6mp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.GraduationProject.pix_revive",
+            "certificate_hash": "163bf2c006459cd763d8edf90d7f83897826d5f9"
+          }
+        },
+        {
+          "client_id": "86189973570-kbmlsld0brctca1vhekcg24jjk2ifjbr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLmvPjV7CZPk7TJPg59q6bKttAkz3sBmk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86189973570-kbmlsld0brctca1vhekcg24jjk2ifjbr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "86189973570-912lo2rps61jtf2iboih0saq03cr9cgl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pixRevive"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

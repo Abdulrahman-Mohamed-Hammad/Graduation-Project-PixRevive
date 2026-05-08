@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:pix_revive/core/App/SharedPreferences/shared_preferences.dart';
+import 'package:pix_revive/core/constants/app_colors.dart';
+import 'package:pix_revive/core/constants/app_fonts.dart';
+import 'package:pix_revive/core/router/go_router.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      SharedPreferencesHelper.getString(KSharedPreferencesKeys.accsesstoken) !=
+              null
+          ? go(
+              context,
+              KRoutes.navbar,
+              extra: SharedPreferencesHelper.getString(
+                KSharedPreferencesKeys.username,
+              )!,
+            )
+          : go(context, KRoutes.authControllerScreen);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: Center(child: LogoText()),
+    );
+  }
+}
+
+class LogoText extends StatelessWidget {
+  const LogoText({super.key, this.size = 48});
+  final double size;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Pix", style: Kfonts.semiBold48.copyWith(fontSize: size)),
+        Text(
+          "Revive",
+          style: Kfonts.semiBold48.copyWith(
+            color: Kcolor.mainColor,
+            fontSize: size,
+          ),
+        ),
+      ],
+    );
+  }
+}

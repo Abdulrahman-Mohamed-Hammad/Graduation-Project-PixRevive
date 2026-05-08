@@ -13,6 +13,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+<string>We need access to save images to your gallery.</string>
+
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access to your photo library.</string>
 	<string>pix_revive</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>

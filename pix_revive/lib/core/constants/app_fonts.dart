@@ -58,4 +58,17 @@ class Kfonts {
     fontFamily: Kfonts.family,
     fontWeight: FontWeight.w400,
   );
+
+  static const TextStyle bold18Black = TextStyle(
+    fontSize: 18,
+    color: Kcolor.black,
+    fontFamily: Kfonts.family,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle bold30Black = TextStyle(
+    fontSize: 30,
+    color: Kcolor.black,
+    fontFamily: Kfonts.family,
+    fontWeight: FontWeight.w700,
+  );
 }

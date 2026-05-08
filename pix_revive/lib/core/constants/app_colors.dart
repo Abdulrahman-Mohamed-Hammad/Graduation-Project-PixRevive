@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 
 class Kcolor {
-  static const backgroundColor = Color(0xFFF9FAFB);
+  static const backgroundColor = Color(0xFFf0f4f8);
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
   static const gray = Color(0xFF414348);
   static const grayOpacity = Color(0x413F4347);
   static const lightgray = Color(0xFFF3F4F6);
 
-  static const firstGradient = Color(0xFF23BFC5);
-  static const endGradient = Color(0xFF1AA6AD);
-  static const mainColor = Color(0xFF23BFC5);
+  static const mainColor = Color(0xFF00c2a8);
 
   static const titleColor = Color(0xFF1a1a1a);
   static const label = Color(0xFF374151);
   static const subtitleText = Color(0xFF4B5563);
   static const inputTextFormField = Color(0xFF9CA3AF);
   static const bordorTextFormField = Color(0xFFE5E7EB);
+  static const red = Color(0xFFFF1231);
   static const gold = Color(0xFFEFBF04);
 }
 

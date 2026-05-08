@@ -7,33 +7,56 @@ environment:
   sdk: ^3.8.1
 
 dependencies:
+  another_flushbar: ^1.12.32
   carousel_slider: ^5.1.1
   color_filter_extension: ^1.0.1
   dartz: ^0.10.1
   dio: ^5.9.0
   dotted_border: ^3.1.0
+  firebase_core: ^4.2.1
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
   flutter_svg: ^2.2.1
   gap: ^3.0.1
   go_router: ^16.3.0
+  google_sign_in: ^7.2.0
   image_picker: ^1.2.1
   lottie: ^3.3.1
-  pinput: ^6.0.0
+  pinput: ^6.0.1
+
+  device_preview: ^1.3.1
+  gal: ^2.3.2
+  shared_preferences: ^2.5.3
+  photo_view: ^0.15.0
+  path_provider: ^2.0.0
+
+
+ 
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+ 
+
+
+
+
+
+
 
 flutter:
   uses-material-design: true
 
-
-
   assets:
-    - assets/Icons/
+    - assets/Icons/ 
+
+
+
+
+
 
   fonts:
     - family: Inter_18
