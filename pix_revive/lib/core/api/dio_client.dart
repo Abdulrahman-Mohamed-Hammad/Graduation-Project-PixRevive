@@ -14,11 +14,12 @@ class Endpoints {
   static const uploadImage = "/api/processing/process/";
   static const uploadImageSaveHistory = "/api/processing/save/";
 
-  static const iFramePAymob = "https://accept.paymob.com/api/acceptance/iframes/1041513?payment_token={payment_key_obtained_previously}";
+
   static const apiKey ="ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRFMk1UWTFOaXdpYm1GdFpTSTZJbWx1YVhScFlXd2lmUS5pU3Y0NWRXMi1JZGh3T3J2ZVpMRGNrbURkZWkxcG9pYWNfMkQyenFZcXR5MWhnd2RDRE5EeU9BR0NOOHFxQzFDZ2lMNk1qXy1OZDlfQ25mUU10Vnktdw==";
   static const getTokenPaymob ="https://accept.paymob.com/api/auth/tokens";
   static const requestOrderPaymob ="https://accept.paymob.com/api/ecommerce/orders";
   static const paymentKey ="https://accept.paymob.com/api/acceptance/payment_keys";
+ 
 }
 
 class Api {

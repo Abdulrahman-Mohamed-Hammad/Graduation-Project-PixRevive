@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseProvider {
@@ -11,6 +13,7 @@ class FirebaseProvider {
   static Future<GoogleSignInAccount?> signInwithGoogle() async {
     try {
       var result = await googleAuth.authenticate();
+      log("Google Sign-In Result: $result");
       return result;
     } catch (e) {
       return null;

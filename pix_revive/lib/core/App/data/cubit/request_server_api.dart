@@ -22,7 +22,7 @@ class RequestServerApp {
     }
   }
 
-  static Future<String?> getNewAccessToken() async {
+  static Future<String?> getNewAccessToken(String token) async {
     try {
       var response = await Api.post(
         Endpoints.continueWithGoogle,
@@ -91,12 +91,12 @@ class RequestServerApp {
 
 
 
-  Future<String?>getTokenApiKey()async{
+ static Future<String?>getTokenApiKey()async{
     try{
      var response = await Api.post(Endpoints.getTokenPaymob,data: {
         "api_key":Endpoints.apiKey});
         if(response.statusCode==200 || response.statusCode==201){
-          return response.data["api_key"];
+          return response.data["token"];
         }
      return "";
     } catch (e) {
@@ -105,18 +105,15 @@ class RequestServerApp {
 
   }
 
-    Future<String?>getOrderId(String token)async{
+ static   Future<String?>getOrderId(String token)async{
       try{
       var response = await Api.post(Endpoints.requestOrderPaymob,data: {
-          "amount_cents": 1000,
-          "currency": "EGP",
+          "amount_cents": 26700,
+          "currency": "USD",
           "items": [
-            {
-              "name": "item1",
-              "amount_cents": 1000,
-              "quantity": 1
-            }
-          ]
+           
+          ],
+         
         },options: Options(headers: {"Authorization": "Bearer $token"}));
           if(response.statusCode==200 || response.statusCode==201){
             return response.data["id"].toString();
@@ -127,4 +124,43 @@ class RequestServerApp {
       }
   
     }
+ static   Future<String?> getPaymentKey({
+  required String authToken,
+  required String orderId,
+  required String amountInCents,
+}) async {
+  try {
+    var response = await Api.post(
+      Endpoints.paymentKey,
+      data: {
+        "auth_token": authToken,
+        "amount_cents": amountInCents,
+        "expiration": 3600, // Token valid for 1 hour
+        "order_id": orderId,
+        "billing_data": {
+          "first_name": SharedPreferencesHelper.getString(KSharedPreferencesKeys.username) ?? "Test",
+          "last_name": "Developer",
+           "email": SharedPreferencesHelper.getString(KSharedPreferencesKeys.email),
+          "phone_number": "+201000000000", // The dummy number
+          "apartment": "NA",
+          "floor": "NA",
+          "street": "NA",
+          "building": "NA",
+          "city": "Alexandria",
+          "country": "EG",
+          "shipping_method": "NA",
+        },
+        "currency": "EGP",
+        "integration_id": 5658071, // REPLACE THIS WITH YOUR CARD INTEGRATION ID
+      },
+    );
+
+    if (response.statusCode == 201) {
+      return response.data["token"]; // This is the final token for the Iframe
+    }
+  } catch (e) {
+    print("Payment Key Error: $e");
+  }
+  return null;
+}
 }

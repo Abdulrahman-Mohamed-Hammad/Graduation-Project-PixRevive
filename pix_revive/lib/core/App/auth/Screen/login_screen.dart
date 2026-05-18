@@ -123,10 +123,10 @@ class LoginScreen extends StatelessWidget {
 
             const Gap(13),
             GoogleButton(
-              onTap: () {
+              onTap: () async{
                 Future.delayed(
                   Duration(milliseconds: 150),
-                  () => cubit.loginWithGoogle(),
+                  () async=> await cubit.loginWithGoogle(),
                 );
               },
               child: Center(

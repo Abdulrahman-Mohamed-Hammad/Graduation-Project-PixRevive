@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pix_revive/core/App/auth/data/model/auth_model.dart';
 import 'package:pix_revive/core/App/screen/Subscritption.dart';
 import 'package:pix_revive/core/App/screen/controller-page_navbar.dart';
+import 'package:pix_revive/core/App/screen/paymentWebView.dart';
 import 'package:pix_revive/core/App/screen/saved_image_screen.dart';
 import 'package:pix_revive/core/App/auth/Screen/verfication_screen.dart';
 import 'package:pix_revive/core/App/auth/data/cubit/Auth_cubit.dart';
@@ -26,6 +27,7 @@ class KRoutes {
   static String enhanceImages = "/enhanceImages";
   static String saved = "/saved";
   static String subscritptionPlan = "/subscritptionPlan";
+  static String paymentWebView = "/paymentWebView";
 
   static var routes = GoRouter(
     routes: [
@@ -82,6 +84,12 @@ class KRoutes {
           GoRoute(
             path: subscritptionPlan,
             builder: (context, state) => SubscritptionPlan(),
+          ),
+          GoRoute(
+            path: paymentWebView,
+            builder: (context, state) {
+            var data =  state.extra as List<String>;
+              return PaymobWebViewScreen(url:data[0] , transactionId: data[1]);},
           ),
         ],
       ),

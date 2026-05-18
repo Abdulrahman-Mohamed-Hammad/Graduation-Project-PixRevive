@@ -4,6 +4,7 @@ class KSharedPreferencesKeys {
   static String accsesstoken = "accsesstoken";
   static String refreshtoken = "refreshtoken";
   static String username = "username";
+  static String email = "email";
 }
 
 class SharedPreferencesHelper {

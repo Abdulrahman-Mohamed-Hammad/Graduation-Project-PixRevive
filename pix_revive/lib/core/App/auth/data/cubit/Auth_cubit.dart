@@ -21,20 +21,25 @@ class AuthCubit extends Cubit<AuthCubitState> {
   final formKey = GlobalKey<FormState>();
   ResponseLoginRegister? responseLoginRegister;
 
-  loginAndRegiter(String path, Auth model) async {
+ Future<void> loginAndRegiter(String path, Auth model) async {
     emit(LoadingState());
     var response = await AuthApi.requestServer(path, model);
     response.fold((left) => emit(ErrorState("Invalid Email or Password")), (
       right,
     ) {
       responseLoginRegister = ResponseLoginRegister.fromJson(right.data);
+      log( "Login/Register Response: ${responseLoginRegister?.toJson()}");
       SharedPreferencesHelper.setString(
         KSharedPreferencesKeys.username,
-        responseLoginRegister!.user!.username!,
+        responseLoginRegister!.user?.username! ?? "",
       );
       SharedPreferencesHelper.setString(
         KSharedPreferencesKeys.accsesstoken,
         responseLoginRegister!.tokens!.access!,
+      );
+      SharedPreferencesHelper.setString(
+        KSharedPreferencesKeys.email,
+        responseLoginRegister!.user?.email! ?? "",
       );
       SharedPreferencesHelper.setString(
         KSharedPreferencesKeys.refreshtoken,
@@ -46,17 +51,17 @@ class AuthCubit extends Cubit<AuthCubitState> {
     });
   }
 
-  loginWithGoogle() async {
+  Future<void> loginWithGoogle() async {
     var response = await FirebaseProvider.signInwithGoogle();
     if (response != null) {
-      loginAndRegiter(
+    await loginAndRegiter(
         Endpoints.continueWithGoogle,
         AuthGoogleModel(email: response.email, googleId: response.id),
       );
     }
   }
 
-  requestResetPassword(
+  Future<void> requestResetPassword(
     String path,
     Auth model, [
     bool showLoading = true,
@@ -74,7 +79,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
-  void verifyEmail(Auth model) async {
+  Future<void> verifyEmail(Auth model) async {
     emit(LoadingState());
     var response = await AuthApi.requestServer(Endpoints.verifyEmail, model);
     response.fold(

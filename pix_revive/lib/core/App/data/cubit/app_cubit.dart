@@ -20,6 +20,7 @@ class AppCubit extends Cubit<AppCubitState> {
   int indexFeature = 0;
   bool secoundy = false;
   bool apply = true;
+  String? orderID;
 
   Future<void> saveInGallery(XFile image, int rotate, AppCubit cubit) async {
     emit(LoadingState());
@@ -40,6 +41,33 @@ class AppCubit extends Cubit<AppCubitState> {
     );
   }
 
+  Future<String?> payment() async {
+   emit(LoadingState());
+   log(SharedPreferencesHelper.getString(KSharedPreferencesKeys.email) ?? "no email");
+    var key = await RequestServerApp.getTokenApiKey();
+     log( "1");
+    if(key != null && key.isNotEmpty){
+      var orderId = await RequestServerApp.getOrderId(key);
+      log( "2");
+      if(orderId != null && orderId.isNotEmpty){
+        orderID = orderId;
+         log( "3");
+        var paymentKey = await RequestServerApp.getPaymentKey(
+          authToken: key,
+          orderId: orderId,
+          amountInCents: 26700.toString(),
+        );
+        if(paymentKey != null && paymentKey.isNotEmpty){
+          emit(SuccessState());
+          log( "Payment key: $paymentKey");
+          return paymentKey;
+        }
+          return null;
+        
+    }
+    }
+  }
+
   Future<void> getHistory() async {
     // emit(LoadingState());
     var response = await RequestServerApp.getHistoryData(getAccessToken()  ?? "");
@@ -50,7 +78,7 @@ class AppCubit extends Cubit<AppCubitState> {
             KSharedPreferencesKeys.accsesstoken,
           );
 
-          var response = await RequestServerApp.getNewAccessToken();
+          var response = await RequestServerApp.getNewAccessToken(SharedPreferencesHelper.getString(KSharedPreferencesKeys.refreshtoken)?? "");
           if (response != null) {
             await SharedPreferencesHelper.setString(
               KSharedPreferencesKeys.accsesstoken,
