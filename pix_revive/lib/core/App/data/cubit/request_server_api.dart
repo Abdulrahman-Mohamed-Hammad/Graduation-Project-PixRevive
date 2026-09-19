@@ -14,10 +14,10 @@ class RequestServerApp {
         Endpoints.history,
         options: Options(headers: {"Authorization": "Bearer $token"}),
       );
-      log("History data: ${response.data}");
+     // log("History data: ${response.data}");
       return Right(response);
     } on DioException catch (e) {
-      log("errrrrrrrrrrrrrrror: ${e.response?.statusCode}");
+   //   log("errrrrrrrrrrrrrrror: ${e.response?.statusCode}");
       return Left(e.response?.statusCode);
     }
   }
@@ -57,7 +57,7 @@ class RequestServerApp {
           headers: {"Authorization": "Bearer $token"},
         ),
       );
-      log("Upload response: ${response.data}");
+   //   log("Upload response: ${response.data}");
       return response.statusCode;
     } on DioException catch (e) {
       return e.response?.data["error"];
@@ -78,13 +78,15 @@ class RequestServerApp {
           headers: {"Authorization": "Bearer $token"},
         ),
       );
-      log("Upload response: ${response.data}");
+     log("Upload response: ${response.data}");
       return Right(response);
     } on DioException catch (e) {
-      log("Upload error: ${e.response?.statusCode}");
-      log("Upload error headers: ${e.response?.headers}");
-      log("Upload error data: ${e.response?.data}");
-      return Left(e.response?.data["message"]);
+     log("Upload error: ${e.response?.statusCode}");
+     log("Upload error headers: ${e.response?.headers}");
+     log("Upload error data: ${e.response?.data}");
+
+
+      return Left( e.response?.statusCode == 429 ? e.response?.data["error"] :e.response?.statusCode == 500 ? "The AI service is starting up — this can take up to a minute. Please try again shortly.":null );
     }
   }
 

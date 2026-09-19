@@ -2,12 +2,10 @@ import 'dart:developer' as prints;
 
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'dart:ui';
-
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gal/gal.dart';
@@ -35,9 +33,9 @@ final controller = PageController();
 final globalKey = GlobalKey();
 
 class EnhanceImages extends StatelessWidget {
-  const EnhanceImages({super.key, required this.images});
+  const EnhanceImages({super.key, required this.image});
 
-  final List<XFile> images;
+  final XFile image;
 
   static const List<List<String>> basic = [
     ["Brightness", Kicon.brightness],
@@ -46,15 +44,14 @@ class EnhanceImages extends StatelessWidget {
     ["Deblur", Kicon.deblur],
     ["Denoise", Kicon.denoising],
     ["Colorization", Kicon.colorlization],
-
     ["Filters", Kicon.mathFilters],
   ];
 
   @override
   Widget build(BuildContext context) {
     int rotate = 0;
-    var cubit = context.read<AppCubit>();
-    var newImages = images;
+    final cubit = context.read<AppCubit>()..newImage =image;
+
     return Scaffold(
       backgroundColor: Kcolor.white,
       body: BlocConsumer<AppCubit, AppCubitState>(
@@ -76,13 +73,14 @@ class EnhanceImages extends StatelessWidget {
             );
           }
           if (state is Finish) {
-            newImages[0] = state.image!;
+
             pop(context);
           }
           if (state is ErrorState) {
             pop(context);
             customFlushbar(state.message ?? "Network Error").show(context);
           }
+        
         },
         buildWhen: (previous, current) => current is! FilterRebuildState,
         builder: (context, state) {
@@ -120,7 +118,7 @@ class EnhanceImages extends StatelessWidget {
                       GestureDetector(
                         onTap: () async {
                           await cubit.saveInGallery(
-                            newImages[0],
+                            cubit.newImage!,
                             rotate,
                             cubit,
                           );
@@ -156,7 +154,6 @@ class EnhanceImages extends StatelessWidget {
                   ),
                 ),
               ),
-
               const Gap(20),
               Expanded(
                 flex: 9,
@@ -167,9 +164,7 @@ class EnhanceImages extends StatelessWidget {
                     buildWhen: (previous, current) =>
                         current is FilterRebuildState,
                     builder: (context, state) {
-                      return PageView.builder(
-                        itemCount: newImages.length,
-                        itemBuilder: (context, index) => ColorFiltered(
+                      return ColorFiltered(
                           colorFilter: ColorFilterExt.merged([
                             ColorFilterExt.brightness(
                               cubit.filterModel.brightness,
@@ -179,12 +174,12 @@ class EnhanceImages extends StatelessWidget {
                           child: RotatedBox(
                             quarterTurns: rotate % 4,
                             child: Image.file(
-                              File(newImages[index].path),
+                              File(cubit.newImage!.path),
+                              key: ValueKey(cubit.newImage!.path),
                               fit: BoxFit.contain,
                             ),
                           ),
-                        ),
-                      );
+                        );
                     },
                   ),
                 ),
@@ -212,11 +207,11 @@ class EnhanceImages extends StatelessWidget {
                           cubit.changeFilter();
                           return;
                         }
-                        prints.log(cubit.indexFeature.toString());
+                        prints.log(cubit.newImage.toString());
 
                         await cubit.uploadImageInServer(
                           Endpoints.uploadImage,
-                          newImages[0],
+                          cubit.newImage!,
                           feature: _getFeature(
                             cubit.indexFeature,
                             cubit.secoundy,
@@ -740,31 +735,28 @@ class NavbarText extends StatelessWidget {
   }
 }
 
-Future<void> saveIMageinGallery(XFile image, int rotate, AppCubit cubit) async {
+Future<XFile> saveIMageinGallery(XFile image, int rotate, AppCubit cubit) async {
   final codec = await instantiateImageCodec(
     await File(image.path).readAsBytes(),
   );
-  final original = (await codec.getNextFrame()).image; // 👈 HERE
+  final original = (await codec.getNextFrame()).image;
 
   // draw
   final recorder = PictureRecorder();
   final canvas = Canvas(recorder);
 
   final isRotated = rotate % 2 != 0;
-  final outW = isRotated ? original.height : original.width; // uses original ✅
-  final outH = isRotated ? original.width : original.height; // uses original ✅
+  final outW = isRotated ? original.height : original.width;
+  final outH = isRotated ? original.width : original.height;
 
   if (rotate % 4 != 0) {
     canvas.translate(outW / 2, outH / 2);
     canvas.rotate((rotate % 4) * pi / 2);
-    canvas.translate(
-      -original.width / 2,
-      -original.height / 2,
-    ); // uses original ✅
+    canvas.translate(-original.width / 2, -original.height / 2);
   }
 
   canvas.drawImage(
-    original, // uses original ✅
+    original,
     Offset.zero,
     Paint()
       ..colorFilter = ColorFilterExt.merged([
@@ -773,15 +765,28 @@ Future<void> saveIMageinGallery(XFile image, int rotate, AppCubit cubit) async {
       ]).colorFilter,
   );
 
-  // save
-  final byteData = await (await recorder.endRecording().toImage(
-    outW,
-    outH,
-  )).toByteData(format: ImageByteFormat.png);
+  final picture = recorder.endRecording();
+  final newImage = await picture.toImage(outW, outH);
+  final byteData = await newImage.toByteData(format: ImageByteFormat.png);
+  final bytes = byteData!.buffer.asUint8List(); // ✅ get bytes ONCE
 
-  await Gal.putImageBytes(byteData!.buffer.asUint8List());
+  // ✅ save to gallery using the same bytes variable
+  await Gal.putImageBytes(bytes);
+
+  // ✅ cleanup
+  original.dispose();
+  newImage.dispose();
+  picture.dispose();
+
+  // ✅ write to temp file
+  final dir = await getTemporaryDirectory();
+  final filePath =
+      '${dir.path}/edited_${DateTime.now().millisecondsSinceEpoch}.png';
+  final file = File(filePath);
+  await file.writeAsBytes(bytes);
+
+  return XFile(filePath);
 }
-
 Future<XFile> imageToXFile(XFile image, int rotate, AppCubit cubit) async {
   final codec = await instantiateImageCodec(
     await File(image.path).readAsBytes(),

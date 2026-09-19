@@ -37,11 +37,11 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
         "Authorization": "Bearer ${SharedPreferencesHelper.getString(KSharedPreferencesKeys.accsesstoken)}",
       }),
     );
-    log("✅ Verify Payment response: ${response.statusCode}");
-    log("✅ Verify Payment body: ${response.data}");
+  //  log("✅ Verify Payment response: ${response.statusCode}");
+  //  log("✅ Verify Payment body: ${response.data}");
     return true;
   } catch (e) {
-    log("❌ Verify Payment error: $e");
+  //  log("❌ Verify Payment error: $e");
     return false;
   }
 }
@@ -55,12 +55,12 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.contains("success=true")) {
-              log("✅ Success URL");
+             // log("✅ Success URL");
           verifyPayment(widget.transactionId!).then((_) => pop(context)); // ✅ call then 
         // pop(context);
               return NavigationDecision.prevent;
             } else if (request.url.contains("success=false")) {
-              log("❌ Failed URL");
+           //   log("❌ Failed URL");
               pop(context);
               return NavigationDecision.prevent;
             }

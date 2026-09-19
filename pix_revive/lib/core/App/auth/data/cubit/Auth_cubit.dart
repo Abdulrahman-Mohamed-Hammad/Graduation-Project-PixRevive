@@ -28,7 +28,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
       right,
     ) {
       responseLoginRegister = ResponseLoginRegister.fromJson(right.data);
-      log( "Login/Register Response: ${responseLoginRegister?.toJson()}");
+  //    log( "Login/Register Response: ${responseLoginRegister?.toJson()}");
       SharedPreferencesHelper.setString(
         KSharedPreferencesKeys.username,
         responseLoginRegister!.user?.username! ?? "",
@@ -47,7 +47,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
       );
 
       emit(SuccsessState());
-      log("Login successful ${responseLoginRegister?.user?.email}");
+    //  log("Login successful ${responseLoginRegister?.user?.email}");
     });
   }
 

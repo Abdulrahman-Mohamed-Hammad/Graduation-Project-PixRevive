@@ -78,7 +78,7 @@ class KRoutes {
             path: enhanceImages,
             builder: (context, state) => BlocProvider<AppCubit>(
               create: (context) => AppCubit(),
-              child: EnhanceImages(images: state.extra as List<XFile>),
+              child: EnhanceImages(image: state.extra as XFile),
             ),
           ),
           GoRoute(
@@ -91,6 +91,7 @@ class KRoutes {
             var data =  state.extra as List<String>;
               return PaymobWebViewScreen(url:data[0] , transactionId: data[1]);},
           ),
+          GoRoute(path:KRoutes.saved,builder: (context, state) => SavedImageScreen(),)
         ],
       ),
     ],

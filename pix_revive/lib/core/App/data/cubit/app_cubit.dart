@@ -21,13 +21,14 @@ class AppCubit extends Cubit<AppCubitState> {
   bool secoundy = false;
   bool apply = true;
   String? orderID;
+  XFile? newImage;
 
   Future<void> saveInGallery(XFile image, int rotate, AppCubit cubit) async {
     emit(LoadingState());
-    await saveIMageinGallery(image, rotate, cubit);
+   var response =await saveIMageinGallery(image, rotate, cubit);
     await uploadImageInServer(
       Endpoints.uploadImageSaveHistory,
-      image,
+      response,
       cubit: cubit,
       loading: false,
     );
@@ -45,13 +46,13 @@ class AppCubit extends Cubit<AppCubitState> {
    emit(LoadingState());
    log(SharedPreferencesHelper.getString(KSharedPreferencesKeys.email) ?? "no email");
     var key = await RequestServerApp.getTokenApiKey();
-     log( "1");
+  //   log( "1");
     if(key != null && key.isNotEmpty){
       var orderId = await RequestServerApp.getOrderId(key);
-      log( "2");
+    //  log( "2");
       if(orderId != null && orderId.isNotEmpty){
         orderID = orderId;
-         log( "3");
+     //    log( "3");
         var paymentKey = await RequestServerApp.getPaymentKey(
           authToken: key,
           orderId: orderId,
@@ -59,7 +60,7 @@ class AppCubit extends Cubit<AppCubitState> {
         );
         if(paymentKey != null && paymentKey.isNotEmpty){
           emit(SuccessState());
-          log( "Payment key: $paymentKey");
+         // log( "Payment key: $paymentKey");
           return paymentKey;
         }
           return null;
@@ -87,7 +88,7 @@ class AppCubit extends Cubit<AppCubitState> {
 
             return;
           }
-          log("Failed to access new token, user needs to log in again");
+      //    log("Failed to access new token, user needs to log in again");
           emit(FailedToAccessNewToken());
           return;
         }
@@ -96,7 +97,7 @@ class AppCubit extends Cubit<AppCubitState> {
         responseHistory = (right.data as List)
             .map<ResponseHistory?>((item) => ResponseHistory.fromJson(item))
             .toList();
-        log("History data: ${responseHistory.length} items");
+      //  log("History data: ${responseHistory.length} items");
         emit(SuccessState());
       },
     );
@@ -104,10 +105,9 @@ class AppCubit extends Cubit<AppCubitState> {
 
   Future<XFile> urlToXFile(String url) async {
     final dir = await getTemporaryDirectory();
-    final filePath = '${dir.path}/temp_image.jpg';
+    final filePath = '${dir.path}/result_${DateTime.now().millisecondsSinceEpoch}.png';
 
     await Dio().download(url, filePath);
-
     return XFile(filePath);
   }
 
@@ -142,10 +142,11 @@ class AppCubit extends Cubit<AppCubitState> {
       (right) async {
         if (loading) {
           responseAIimage = ResponseHistory.fromJsonAi(right.data);
-          var newimage = await urlToXFile(responseAIimage?.restoredImage ?? "");
-
-          log(right.data.toString());
-          if (loading) emit(Finish(newimage));
+          
+          newImage = await urlToXFile(responseAIimage?.restoredImage ?? "");
+           
+         // log(right.data.toString());
+        if (loading) emit(Finish());
         }
       },
     );

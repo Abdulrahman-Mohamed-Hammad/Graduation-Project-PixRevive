@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class Endpoints {
-  static const baseUrl = "https://project-3-production-0259.up.railway.app";
+  static const baseUrl = "https://project-3-production-494f.up.railway.app";
   static const login = "/api/users/login/";
   static const register = "/api/users/register/";
   static const requestResetPassword = "/api/users/password/reset/request/";

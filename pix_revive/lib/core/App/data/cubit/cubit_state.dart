@@ -14,8 +14,8 @@ class LoadingState extends AppCubitState {}
 class LoadingStateAi extends AppCubitState {}
 
 class Finish extends AppCubitState {
-  Finish(this.image);
-  XFile? image;
+  Finish();
+
 }
 
 class ErrorState extends AppCubitState {

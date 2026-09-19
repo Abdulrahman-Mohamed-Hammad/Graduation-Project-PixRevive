@@ -16,10 +16,12 @@ class Kicon {
   static const String superResolution = "assets/Icons/superResolution.svg";
   static const String deblur = "assets/Icons/deblur1.svg";
   static const String mathFilters = "assets/Icons/MathFilters.svg";
-  static const String beforeAndafterBrightnessPNG =
-      "assets/Icons/beforeAndafterBrightness.png";
+  static const String beforeAndafterBrightnessPNG = "assets/Icons/beforeAndafterBrightness.png";
+  static const String beforeAndafterafterDenoise = "assets/Icons/afterDenoise.png";
+  static const String beforeAndafterAfterDubur = "assets/Icons/AfterDubur.png";
+  static const String afterSuper = "assets/Icons/afterSuper.png";
+  static const String afterColor ="assets/Icons/afterColor.png";
   static const String afterContrastPNG = "assets/Icons/afterBrigtness.png";
-
   static const String dotsWave = "assets/Icons/DotsWave.json";
   static const String success = "assets/Icons/success.json";
   static const String bilateralFilter = "assets/Icons/BilateralFilter.svg";

@@ -85,7 +85,7 @@ class SubscritptionPlan extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () async{
-                          log("message");
+                     //     log("message");
                        var key =   await cubit.payment();
                        if(key != null){
                         push (context, KRoutes.paymentWebView, extra:["https://accept.paymob.com/api/acceptance/iframes/1041513?payment_token=$key", cubit.orderID ?? ""]);

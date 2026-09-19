@@ -18,19 +18,27 @@ const List<List<dynamic>> features = [
   ["Adjust brightness", true],
   ["Remove Blur", true],
   ["Adjust Contrast", true],
+  ["Colorization", true],
   ["Reduce Noise", true],
   ["High Resolotion", true],
   // ["Up to 10 Images", false],
 ];
 const List<String> explain = [
   "Make your photo lighter or darker. Perfect for fixing dark indoor shots or washed-out outdoor photos.",
-  "",
+  "Removes blur and restores fine detail, ideal for shaky captures, motion blur, or soft, out-of-focus images.",
   "Increase the difference between light and dark areas. Makes colors pop and gives your photo more depth.",
+  "Turn black-and-white photos into vivid color images. Ideal for restoring old family pictures or historical photos.",
+  "Clean up grainy, noisy photos for a smoother, clearer result. Ideal for night shots or pictures taken in low light.",
+  "Make your photos bigger and sharper without the blur. Great for old, low-res photos or images you want to print."
+
 ];
 const List<String> imagesPath = [
   Kicon.beforeAndafterBrightnessPNG,
-  "",
+  Kicon.beforeAndafterAfterDubur,
   Kicon.afterContrastPNG,
+  Kicon.afterColor,
+  Kicon.beforeAndafterafterDenoise,
+  Kicon.afterSuper
 ];
 
 class Home extends StatelessWidget {
@@ -47,19 +55,6 @@ class Home extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // CircleAvatar(
-            //   radius: 25,
-            //   backgroundColor: Kcolor.mainColor.withValues(alpha: 0.3),
-
-            //   child: CircleAvatar(
-            //     radius: 23,
-            //     backgroundColor: Kcolor.mainColor,
-            //     child: Text(
-            //       "JD",
-            //       style: Kfonts.meduim16.copyWith(color: Kcolor.white),
-            //     ),
-            //   ),
-            // ),
             const Gap(10),
             Expanded(
               child: Column(
@@ -99,7 +94,7 @@ class Home extends StatelessWidget {
             features.length,
             (index) => GestureDetector(
               onTap: () {
-                if (index == 0 || index == 2) {
+               
                   showDialog(
                     context: context,
                     builder: (context) => Dialog(
@@ -150,7 +145,7 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   );
-                }
+                
               },
               child: SizedBox(
                 width: (MediaQuery.of(context).size.width / 2) - 24,
@@ -330,8 +325,7 @@ class WhiteBoardContainer extends StatefulWidget {
 class _WhiteBoardContainerState extends State<WhiteBoardContainer> {
   double topMargin = 0;
   final ImagePicker picker = ImagePicker();
-  List<XFile> images = [];
-  List<List<String>> imageInfo = [];
+  XFile? image;
   @override
   void initState() {
     // TODO: implement initState
@@ -350,33 +344,17 @@ class _WhiteBoardContainerState extends State<WhiteBoardContainer> {
   }
 
   Future<void> pickImages() async {
-    var result = await picker.pickMultiImage(requestFullMetadata: true);
-    images.clear();
-    imageInfo.clear();
-
-    if (result.isNotEmpty) {
-      imageInfo = await getImagesInfo(result);
+    var result = await picker.pickImage(source: ImageSource.gallery);
+    image =null;
+    if (result !=null) {
       setState(() {
-        images.addAll(result);
+        image =result;
       });
-      push(context, KRoutes.enhanceImages, extra: images);
+      push(context, KRoutes.enhanceImages, extra: image);
     }
   }
 
-  Future<List<List<String>>> getImagesInfo(List<XFile> images) async {
-    List<List<String>> imageInfo = [];
-    for (var i in images) {
-      List<String> temp = [];
-      temp.add("${((await i.length()) / (1024 * 1024)).toStringAsFixed(2)} MB");
-      DateTime date = await i.lastModified();
-      temp.add(
-        "${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}",
-      );
 
-      imageInfo.add(temp);
-    }
-    return imageInfo;
-  }
 
   @override
   Widget build(BuildContext context) {
