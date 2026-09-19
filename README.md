@@ -40,8 +40,6 @@ PixRevive uses advanced AI models and image processing techniques to bring old, 
 
 ---
 
-## 🚀 Getting Started
-*(Add setup/installation instructions here — e.g., prerequisites, how to clone, install dependencies, and run the app)*
 
 ## 🛠️ Built With
 Flutter — cross-platform app framework
