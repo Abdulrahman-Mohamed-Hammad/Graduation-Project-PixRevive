@@ -18,7 +18,6 @@ PixRevive uses advanced AI models and image processing techniques to bring old, 
   <img src="screenshots/SecoundImage 95.png" width="300"/>
 </p>
 
-*(Upload your screenshot images into a `screenshots/` folder in this repo, then update the file names above to match.)*
 
 ---
 
